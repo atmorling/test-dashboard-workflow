@@ -1,10 +1,5 @@
-# test
-
-test
-
-## Author
-
-alex
+# Test-Dashboard 
+a workflow to test / validate dashboard contracts
 
 ## License
 
