@@ -99,9 +99,6 @@ workflow:
       filename: "ungrouped"
       root_path: ${{ env.ECOSCOPE_WORKFLOWS_RESULTS }}
       filetype: csv
-    skipif:
-      conditions:
-        - never
 
   - id: ungrouped_files_list
     task: create_files_single_view
@@ -109,6 +106,9 @@ workflow:
       files: 
         - ${{ workflow.persist_events.return }}
       view: null
+    skipif:
+      conditions:
+        - never
 
   ### Map ungrouped
   - name: Create map layer from grouped Events
@@ -181,9 +181,6 @@ workflow:
       filename: null
       root_path: ${{ env.ECOSCOPE_WORKFLOWS_RESULTS }}
       filetype: csv
-    skipif:
-      conditions:
-        - never
     mapvalues:
       argnames: df
       argvalues: ${{ workflow.split_event_groups.return }}
@@ -193,6 +190,9 @@ workflow:
     map:
       argnames: [view, files]
       argvalues: ${{ workflow.persist_grouped_events.return }}
+    skipif:
+      conditions:
+        - never
   - name: Merge Files
     id: merge_grouped_files_list
     task: merge_file_views
