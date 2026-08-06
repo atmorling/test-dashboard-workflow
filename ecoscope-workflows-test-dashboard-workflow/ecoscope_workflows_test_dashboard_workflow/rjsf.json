@@ -77,7 +77,16 @@
           },
           "title": "Event Types",
           "type": "array",
-          "description": "Specify the event type(s) to analyze (optional). Leave this section empty to analyze all event types."
+          "description": "Specify the event type(s) to analyze (optional). Leave this section empty to analyze all event types.",
+          "ecoscope:transform": [
+            {
+              "transformer": "EarthRangerEnumResolver",
+              "transformer_kws": {
+                "type": "event_type",
+                "depends_on": "properties.er_client_name.properties.data_source.properties.name"
+              }
+            }
+          ]
         },
         "include_null_geometry": {
           "default": true,
@@ -119,7 +128,16 @@
           },
           "title": " ",
           "type": "array",
-          "description": "            Specify how the data should be grouped to create the views for your dashboard.\n            This field is optional; if left blank, all the data will appear in a single view.\n            "
+          "description": "            Specify how the data should be grouped to create the views for your dashboard.\n            This field is optional; if left blank, all the data will appear in a single view.\n            ",
+          "ecoscope:transform": [
+            {
+              "transformer": "EarthRangerEnumResolver",
+              "transformer_kws": {
+                "type": "spatial_feature_group",
+                "depends_on": "properties.er_client_name.properties.data_source.properties.name"
+              }
+            }
+          ]
         }
       },
       "type": "object",
@@ -233,7 +251,21 @@
       "properties": {
         "index_name": {
           "title": "Category",
-          "type": "string"
+          "type": "string",
+          "oneOf": [
+            {
+              "const": "event_category",
+              "title": "Event Type Category"
+            },
+            {
+              "const": "event_type",
+              "title": "Event Type"
+            },
+            {
+              "const": "reported_by_name",
+              "title": "Reported By Name"
+            }
+          ]
         }
       },
       "required": [
@@ -262,7 +294,12 @@
         "event_types",
         "include_null_geometry",
         "force_point_geometry"
-      ]
+      ],
+      "event_types": {
+        "ui:options": {
+          "displayLabel": false
+        }
+      }
     },
     "ui:order": [
       "workflow_details",
@@ -270,7 +307,30 @@
       "time_range",
       "get_events_data",
       "groupers"
-    ]
+    ],
+    "groupers": {
+      "groupers": {
+        "items": {
+          "anyOf": [
+            {
+              "ui:options": {
+                "label": false
+              }
+            },
+            {
+              "ui:options": {
+                "label": false
+              }
+            },
+            {
+              "ui:options": {
+                "label": false
+              }
+            }
+          ]
+        }
+      }
+    }
   },
   "additionalProperties": false
 }
